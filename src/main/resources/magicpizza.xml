@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+        "http://struts.apache.org/dtds/struts-2.5.dtd">
+<struts>
+    <package name="mp" namespace="/mp" extends="struts-default">
+
+        <default-action-ref name="order" />
+
+        <action name="order" class="com.acabra.mp.Order">
+            <interceptor-ref name="params">
+                <param name="excludeParams">^PizzaOrder.*</param>
+            </interceptor-ref>
+            <result name="success">/WEB-INF/mp/order.jsp</result>
+            <result name="input">/WEB-INF/mp/order.jsp</result>
+        </action>
+
+    </package>
+</struts>
