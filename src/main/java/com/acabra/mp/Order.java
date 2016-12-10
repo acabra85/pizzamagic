@@ -61,6 +61,11 @@ public class Order extends ActionSupport {
     private boolean quantityError;
 
     /**
+     * Indicates if the quantity is less than one
+     */
+    private boolean quantityLessThanOne;
+
+    /**
      * The total amount to pay calculated as (quantity * pizzaPrice)
      */
     private int orderTotal;
@@ -81,6 +86,7 @@ public class Order extends ActionSupport {
     public String execute() throws Exception {
         orderProcessed = false;
         quantityError = false;
+        quantityLessThanOne = false;
         try {
             if(OrderValidation.validate(this)) {
                 Pizza pizza = pizzasMap.get(pizzaId);
@@ -88,6 +94,7 @@ public class Order extends ActionSupport {
                 orderProcessed = true;
                 return SUCCESS;
             }
+            quantityLessThanOne = true;
             return INPUT;
         } catch (InputMismatchException ime) {
             quantityError = true;
@@ -157,5 +164,9 @@ public class Order extends ActionSupport {
 
     public boolean getQuantityError() {
         return quantityError;
+    }
+
+    public boolean getQuantityLessThanOne() {
+        return quantityLessThanOne;
     }
 }

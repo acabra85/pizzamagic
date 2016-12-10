@@ -131,6 +131,19 @@ public class OrderValidationTest {
     }
 
     @Test
+    public void test_errorInPizzaOrder_wrong_quantity_decimal_return_false() {
+        PowerMockito.mockStatic(PizzaUtils.class);
+        Mockito.when(PizzaUtils.loadPizzasFromMockFile()).thenReturn(TEST_PIZZAS);
+
+        Order order = PizzaTestUtils.createOrder("1", "0.640", "Peter", "SomeStreet 3", "+48444");
+
+        PowerMockito.verifyStatic(times(1));
+        PizzaUtils.loadPizzasFromMockFile();
+
+        Assert.assertFalse(OrderValidation.validate(order));
+    }
+
+    @Test
     public void test_errorInPizzaOrder_wrong_quantity_double_return_true() {
         PowerMockito.mockStatic(PizzaUtils.class);
         Mockito.when(PizzaUtils.loadPizzasFromMockFile()).thenReturn(TEST_PIZZAS);

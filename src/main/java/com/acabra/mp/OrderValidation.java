@@ -48,8 +48,8 @@ public class OrderValidation {
             throw new InputMismatchException(error);
         }
         return quantity.charAt(0)=='-' ?
-                (NumberUtils.isDigits(quantity.substring(1)) && Double.valueOf(quantity).intValue() > 0) :
-                (NumberUtils.isDigits(quantity.replace(".", "")) && Double.valueOf(quantity) > 0);
+                (NumberUtils.isDigits(quantity.substring(1)) && Double.valueOf(quantity).intValue() >= 1) :
+                (NumberUtils.isDigits(quantity.replace(".", "")) && Double.valueOf(quantity).intValue() >= 1);
     }
 
     private static boolean validString(String str) {

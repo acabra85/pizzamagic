@@ -44,9 +44,10 @@
             <s:submit key="PizzaOrder.submit" style="float:left"/>
         </s:form>
 
-        <!-- Action Results-->
+        <!-- Action Display Results-->
         <s:set name="showProcessed" value="orderProcessed"/>
         <s:set name="showQuantityError" value="quantityError"/>
+        <s:set name="showQuantitySmallOne" value="quantityLessThanOne"/>
         <s:if test="%{#showProcessed==true}">
             <s:div class="success">
                 <s:text name="PizzaOrder.orderplacedStart" />
@@ -57,6 +58,11 @@
         <s:if test="%{#showQuantityError==true}">
             <s:div  class="error" id="error_box">
                 <s:text name="PizzaOrder.wrongquantity" />
+            </s:div>
+        </s:if>
+        <s:if test="%{#showQuantitySmallOne==true}">
+            <s:div  class="error" id="error_box">
+                <s:text name="PizzaOrder.wrongquantitynotpositive" />
             </s:div>
         </s:if>
     </body>
