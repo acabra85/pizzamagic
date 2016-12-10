@@ -16,13 +16,13 @@ import java.util.Map;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 /**
- * Created by Agustin on 12/10/2016.
+ * @author Agustin Cabra.
  */
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({Order.class, PizzaUtils.class})
 public class OrderValidationTest {
 
-    private static Map<String ,Pizza> TEST_PIZZAS =  new HashMap<String, Pizza>(){{
+    private static Map<String, Pizza> TEST_PIZZAS = new HashMap<String, Pizza>() {{
         put("1", new Pizza("1", 1, "1"));
         put("2", new Pizza("2", 2, "2"));
         put("3", new Pizza("3", 3, "3"));
@@ -40,7 +40,8 @@ public class OrderValidationTest {
         PizzaUtils.loadPizzasFromMockFile();
     }
 
-    @Test @Ignore
+    @Test
+    @Ignore
     public void test_for_invalid_order_noTelephone_return_false() {
         PowerMockito.mockStatic(PizzaUtils.class);
         Mockito.when(PizzaUtils.loadPizzasFromMockFile()).thenReturn(TEST_PIZZAS);
@@ -114,6 +115,32 @@ public class OrderValidationTest {
         PizzaUtils.loadPizzasFromMockFile();
 
         Assert.assertFalse(OrderValidation.validate(order));
+    }
+
+    @Test
+    public void test_errorInPizzaOrder_wrong_quantity_hexadecimal_return_false() {
+        PowerMockito.mockStatic(PizzaUtils.class);
+        Mockito.when(PizzaUtils.loadPizzasFromMockFile()).thenReturn(TEST_PIZZAS);
+
+        Order order = PizzaTestUtils.createOrder("1", "0x640", "Peter", "SomeStreet 3", "+48444");
+
+        PowerMockito.verifyStatic(times(1));
+        PizzaUtils.loadPizzasFromMockFile();
+
+        Assert.assertFalse(OrderValidation.validate(order));
+    }
+
+    @Test
+    public void test_errorInPizzaOrder_wrong_quantity_double_return_true() {
+        PowerMockito.mockStatic(PizzaUtils.class);
+        Mockito.when(PizzaUtils.loadPizzasFromMockFile()).thenReturn(TEST_PIZZAS);
+
+        Order order = PizzaTestUtils.createOrder("1", "10.0", "Peter", "SomeStreet 3", "+48444");
+
+        PowerMockito.verifyStatic(times(1));
+        PizzaUtils.loadPizzasFromMockFile();
+
+        Assert.assertTrue(OrderValidation.validate(order));
     }
 
     //-- Acceptance defined Tests for Order Validation

@@ -1,9 +1,6 @@
 <%--
-  Created by IntelliJ IDEA.
-  User: Agustin
-  Date: 12/10/2016
-  Time: 11:42
-  To change this template use File | Settings | File Templates.
+  This file represents the View component for a pizza order.
+  author: Agustin Cabra
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="s" uri="/struts-tags" %>

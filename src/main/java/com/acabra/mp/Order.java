@@ -7,45 +7,84 @@ import java.util.InputMismatchException;
 import java.util.Map;
 
 /**
- * Created by Agustin on 12/10/2016.
+ * This class represents the action Order which receives the parameters from the view
+ * and validates them finally calculates the total order price to pay or an error.
+ * @author Agustin Cabra.
  */
 public class Order extends ActionSupport {
 
     private static final String DEFAULT_PIZZA_KEY = "1";
+
+    /**
+     * Map Containing the pizzas indexed by pizzaId
+     */
     private final Map<String, Pizza> pizzasMap;
+
+    /**
+     * A collection representation of all pizzas available for the purpose of easy representation to view.
+     */
     private final Collection<Pizza> pizzas;
+
+    /**
+     * Represents a pizzaId selected on the view
+     */
+    private String pizzaId;
+
+    /**
+     * Represents the amount of pizzas to order
+     */
+    private String quantity;
+
+    /**
+     * Customers delivery name
+     */
+    private String name;
+
+    /**
+     * Customers delivery address
+     */
+    private String address;
+
+    /**
+     * Customers telephone number
+     */
+    private String telephone;
+
+    /**
+     * Indicates whether the order was successfully processed or not
+     */
+    private boolean orderProcessed;
+
+    /**
+     * Indicates if an error related to the quantity field was detected (When the quantity is not a number)
+     */
     private boolean quantityError;
 
-    private String quantity;
-    private String name;
-    private String address;
-    private String telephone;
-    private String pizzaId;
-    private boolean orderProcessed;
+    /**
+     * The total amount to pay calculated as (quantity * pizzaPrice)
+     */
     private int orderTotal;
 
     public Order() {
         pizzasMap = PizzaUtils.loadPizzasFromMockFile();
         pizzas = pizzasMap.values();
-        pizzaId = null;
-        quantity = null;
-        name = null;
-        address = null;
-        telephone = null;
-        orderProcessed = false;
-        orderTotal = 0;
-        quantityError = false;
     }
 
+    /**
+     * This method calls validation for the parameters received from view
+     * and calculates the total order price
+     * @return String representing Strut response "success" if pizzaId and quantity are valid
+     * or "input" indicating wrong input was placed.
+     * @throws Exception
+     */
     @Override
     public String execute() throws Exception {
         orderProcessed = false;
         quantityError = false;
         try {
-            boolean validate = OrderValidation.validate(this);
-            if(validate) {
+            if(OrderValidation.validate(this)) {
                 Pizza pizza = pizzasMap.get(pizzaId);
-                orderTotal = Integer.parseInt(quantity) * pizza.getPrice();
+                orderTotal = Double.valueOf(quantity).intValue() * pizza.getPrice();
                 orderProcessed = true;
                 return SUCCESS;
             }

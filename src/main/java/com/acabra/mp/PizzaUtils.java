@@ -10,19 +10,28 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Created by Agustin on 12/10/2016.
+ * Utility class to perform task related to files in the system.
+ * @author Agustin Cabra.
  */
 public class PizzaUtils {
 
     private static com.opensymphony.xwork2.util.logging.Logger logger = LoggerFactory.getLogger(PizzaUtils.class);
 
+    /**
+     * A default map of pizzas to be used when file retrieving fails.
+     */
     private static Map<String, Pizza> DEFAULT_PIZZAS =  new HashMap<String, Pizza>(){{
         put("1", new Pizza("1", 5, "1_"));
         put("2", new Pizza("2", 6, "2_"));
         put("3", new Pizza("3", 7, "3_"));
     }};
 
-    public static Map<String, Pizza> loadPizzasFromMockFile() {
+    /**
+     * Generates the Map of pizzas from the specified mock file creates unique ids for every pizza read.
+     * In case of failure the file input a default map is returned.
+     * @return a map {pizzaId, PizzaObject} to store the pizzas read from the input file
+     */
+    static Map<String, Pizza> loadPizzasFromMockFile() {
         try (BufferedReader bf = new BufferedReader(new InputStreamReader(PizzaUtils.class.getResourceAsStream("/mocks/pizzas_mock.txt")))) {
             Map<String, Pizza> mockedPizzas = new HashMap<>();
             AtomicInteger code = new AtomicInteger(0);

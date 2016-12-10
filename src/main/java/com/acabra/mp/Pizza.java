@@ -1,11 +1,23 @@
 package com.acabra.mp;
 
 /**
- * Created by Agustin on 12/10/2016.
+ * @author Agustin Cabra.
  */
 public class Pizza {
+
+    /**
+     * Pizza Name
+     */
     private final String name;
+
+    /**
+     * Pizza Price
+     */
     private final int price;
+
+    /**
+     * Pizza unique Id in the system.
+     */
     private final String id;
 
     public Pizza(String name, int price, String id) {

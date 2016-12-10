@@ -8,9 +8,10 @@
         <default-action-ref name="order" />
 
         <action name="order" class="com.acabra.mp.Order">
-            <interceptor-ref name="params">
-                <param name="excludeParams">^PizzaOrder.*</param>
-            </interceptor-ref>
+            <!--Interceptor created to avoid sending labels from the bundle as parameters-->
+            <!--<interceptor-ref name="params">-->
+                <!--<param name="excludeParams">^PizzaOrder.*</param>-->
+            <!--</interceptor-ref>-->
             <result name="success">/WEB-INF/mp/order.jsp</result>
             <result name="input">/WEB-INF/mp/order.jsp</result>
         </action>
