@@ -1,6 +1,7 @@
 package com.acabra.mp;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,11 +29,14 @@ public class OrderValidationTest {
         put("3", new Pizza("3", 3, "3"));
     }};
 
-    @Test
-    public void test_for_valid_order_return_true() {
+    @Before
+    public void setup(){
         PowerMockito.mockStatic(PizzaUtils.class);
         Mockito.when(PizzaUtils.loadPizzasFromMockFile()).thenReturn(TEST_PIZZAS);
+    }
 
+    @Test
+    public void test_for_valid_order_return_true() {
         Order order = PizzaTestUtils.createOrder("1", "2", "Peter", "SomeStreet 3", "+485552223");
         Assert.assertTrue(OrderValidation.validate(order));
 
@@ -43,9 +47,6 @@ public class OrderValidationTest {
     @Test
     @Ignore
     public void test_for_invalid_order_noTelephone_return_false() {
-        PowerMockito.mockStatic(PizzaUtils.class);
-        Mockito.when(PizzaUtils.loadPizzasFromMockFile()).thenReturn(TEST_PIZZAS);
-
         Order order = PizzaTestUtils.createOrder("1", "2", "Peter", "SomeStreet 3", "   ");
         Assert.assertFalse(OrderValidation.validate(order));
 
@@ -55,9 +56,6 @@ public class OrderValidationTest {
 
     @Test
     public void test_for_invalid_order_wrongPizzaId_return_false() {
-        PowerMockito.mockStatic(PizzaUtils.class);
-        Mockito.when(PizzaUtils.loadPizzasFromMockFile()).thenReturn(TEST_PIZZAS);
-
         Order order = PizzaTestUtils.createOrder("4", "2", "Peter", "SomeStreet 3", "+48444");
         Assert.assertFalse(OrderValidation.validate(order));
 
@@ -67,9 +65,6 @@ public class OrderValidationTest {
 
     @Test(expected = InputMismatchException.class)
     public void test_errorInPizzaOrder_wrong_quantity_return_false() {
-        PowerMockito.mockStatic(PizzaUtils.class);
-        Mockito.when(PizzaUtils.loadPizzasFromMockFile()).thenReturn(TEST_PIZZAS);
-
         Order order = PizzaTestUtils.createOrder("1", "asda", "Peter", "SomeStreet 3", "+48444");
 
         PowerMockito.verifyStatic(times(1));
@@ -80,9 +75,6 @@ public class OrderValidationTest {
 
     @Test(expected = InputMismatchException.class)
     public void test_errorInPizzaOrder_wrong_quantity2_return_false() {
-        PowerMockito.mockStatic(PizzaUtils.class);
-        Mockito.when(PizzaUtils.loadPizzasFromMockFile()).thenReturn(TEST_PIZZAS);
-
         Order order = PizzaTestUtils.createOrder("1", "", "Peter", "SomeStreet 3", "+48444");
 
         PowerMockito.verifyStatic(times(1));
@@ -93,9 +85,6 @@ public class OrderValidationTest {
 
     @Test
     public void test_errorInPizzaOrder_wrong_quantity_negative_return_false() {
-        PowerMockito.mockStatic(PizzaUtils.class);
-        Mockito.when(PizzaUtils.loadPizzasFromMockFile()).thenReturn(TEST_PIZZAS);
-
         Order order = PizzaTestUtils.createOrder("1", "-1", "Peter", "SomeStreet 3", "+48444");
 
         PowerMockito.verifyStatic(times(1));
@@ -106,9 +95,6 @@ public class OrderValidationTest {
 
     @Test
     public void test_errorInPizzaOrder_wrong_quantity_zero_return_false() {
-        PowerMockito.mockStatic(PizzaUtils.class);
-        Mockito.when(PizzaUtils.loadPizzasFromMockFile()).thenReturn(TEST_PIZZAS);
-
         Order order = PizzaTestUtils.createOrder("1", "0", "Peter", "SomeStreet 3", "+48444");
 
         PowerMockito.verifyStatic(times(1));
@@ -119,9 +105,6 @@ public class OrderValidationTest {
 
     @Test
     public void test_errorInPizzaOrder_wrong_quantity_hexadecimal_return_false() {
-        PowerMockito.mockStatic(PizzaUtils.class);
-        Mockito.when(PizzaUtils.loadPizzasFromMockFile()).thenReturn(TEST_PIZZAS);
-
         Order order = PizzaTestUtils.createOrder("1", "0x640", "Peter", "SomeStreet 3", "+48444");
 
         PowerMockito.verifyStatic(times(1));
@@ -132,9 +115,6 @@ public class OrderValidationTest {
 
     @Test
     public void test_errorInPizzaOrder_wrong_quantity_decimal_return_false() {
-        PowerMockito.mockStatic(PizzaUtils.class);
-        Mockito.when(PizzaUtils.loadPizzasFromMockFile()).thenReturn(TEST_PIZZAS);
-
         Order order = PizzaTestUtils.createOrder("1", "0.640", "Peter", "SomeStreet 3", "+48444");
 
         PowerMockito.verifyStatic(times(1));
@@ -145,9 +125,6 @@ public class OrderValidationTest {
 
     @Test
     public void test_errorInPizzaOrder_wrong_quantity_double_return_true() {
-        PowerMockito.mockStatic(PizzaUtils.class);
-        Mockito.when(PizzaUtils.loadPizzasFromMockFile()).thenReturn(TEST_PIZZAS);
-
         Order order = PizzaTestUtils.createOrder("1", "10.0", "Peter", "SomeStreet 3", "+48444");
 
         PowerMockito.verifyStatic(times(1));
@@ -159,9 +136,6 @@ public class OrderValidationTest {
     //-- Acceptance defined Tests for Order Validation
     @Test(expected = InputMismatchException.class)
     public void test_errorInPizzaOrder_return_false() {
-        PowerMockito.mockStatic(PizzaUtils.class);
-        Mockito.when(PizzaUtils.loadPizzasFromMockFile()).thenReturn(TEST_PIZZAS);
-
         Order order = PizzaTestUtils.createOrder("1", "NaN", "Peter", "SomeStreet 3", "+48444");
 
         PowerMockito.verifyStatic(times(1));
